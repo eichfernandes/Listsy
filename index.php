@@ -4,9 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <?php include 'navbar.php'; ?>
-    <t1>Bem vindo</t1>
+    <?php include 'components/navbar.php'; ?>
+    <div class="container">
+        
+    </div>
+    <?php include 'components/footer.php'; ?>
 </body>
 </html>
