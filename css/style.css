@@ -1,5 +1,14 @@
 /* GLOBAIS */
 
+:root {
+  --cor-navbar: #57A2A2;
+  --cor-fundo: #222C2C;
+  --cor-branco: #E6F4F5;
+  --cor-texto: #308585;
+  --cor-active: #267474;
+  --font-principal: 'Inter', sans-serif;
+}
+
 *{
     box-sizing: border-box;
 }
@@ -12,12 +21,12 @@ body {
     margin: 0;
     font-family: 'Inter', sans-serif;
     justify-content: center;
-    background: linear-gradient(to bottom, #57A2A2 228px, #222C2C 228px);
-    background-color: #222C2C;
+    background: linear-gradient(to bottom, var(--cor-navbar) 228px, var(--cor-fundo) 228px);
+    background-color: var(--cor-fundo);
     background-repeat: no-repeat;
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    min-height: 100vh;
 }
 
 a{
@@ -25,14 +34,18 @@ a{
     text-decoration: none;
 }
 
-.container{
-    flex: 1;
+.content{
     margin: 0 10vw;
-    background: #E6F4F5;
+    background: var(--cor-branco);
     box-shadow: 0px 5px 20px rgb(0, 0, 0, 0.25);
-    color: 308585;
+    color: var(--cor-texto);
 }
 
+.btn-maingreen{
+    font-size: clamp(16px, 2vw, 32px);
+    border-radius: 10px;
+    box-shadow: 0px 5px 20px rgb(0, 0, 0, 0.15), inset 0 4px 20px rgba(255, 255, 255, 0.15);
+}
 
 /* BARRA DE NAVEGAÇÃO */
 
@@ -42,7 +55,7 @@ a{
     align-items: center;
     height: clamp(80px, 16vw, 129px);
     margin: 0;
-    color: #E6F4F5;
+    color: var(--cor-branco);
     padding: 0 clamp(15px, 8vw, 60px);
 }
 
@@ -80,22 +93,60 @@ a{
 
 /* FOOTER */
 
+
+
 .footer {
-  background-color: #222C2C;
-  color: #E6F4F5;
+  background-color: var(--cor-fundo);
+  color: var(--cor-branco);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   text-align: center;
-  padding: 1rem;
-  margin-top: 30px;
+  height: clamp(100px, 15vw, 200px);
+  font-size: clamp(8px, 1.5vw, 16px);
 }
 
-.credito{
+.footer *{
+    margin:0;
+}
+
+.footer .credito{
     display: flex;
     justify-content: center;
     text-align: left;
-    font-size: 14px;
+    font-size: clamp(6px, 1.5vw, 14px);
+    margin-bottom: clamp(10px, 1.8vw, 30px);
 }
 
-.credito svg{
-    height: 50px;
-    width: 50px;
+.footer .credito svg{
+    height: clamp(20px, 4.3vw, 50px);
+    width: clamp(20px, 4.3vw, 50px);
+}
+
+.footer .credito div{
+    margin-left: clamp(0px, 0.7vw, 10px)
+}
+
+.footer a:hover{
+    color: white;
+}
+
+
+
+/* HOME */
+
+.home{
+    padding: clamp(20px, 5vw, 60px) clamp(6px, 10vw, 140px) clamp(20px, 10vw, 120px);
+}
+
+.home h1{
+    font-size: clamp(24px, 4vw, 48px);
+}
+
+.home p{
+    font-size: clamp(14px, 1.8vw, 24px);
+}
+
+.home .btn-maingreen{
+    margin: clamp(25px, 5vw, 50px) 0px clamp(50px, 10vw, 100px);
 }

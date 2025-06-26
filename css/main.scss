@@ -1,0 +1,12 @@
+
+@import "../node_modules/bootstrap/scss/_functions.scss";
+@import "../node_modules/bootstrap/scss/_variables.scss";
+
+$custom-colors: (
+    "maingreen": #308585,
+    "mainwhite": #E6F4F5
+);
+
+$theme-colors: map-merge($theme-colors, $custom-colors);
+
+@import "../node_modules/bootstrap/scss/bootstrap.scss";
