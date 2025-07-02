@@ -11,26 +11,28 @@
 </head>
 <body>
     <?php include 'components/navbar.php'; ?>
-    <div class="content home" style="margin: 0;">
-        <h1>Listas compartilhadas, simples como devem ser</h1>
-        <p>Crie grupos com amigos, família ou colegas de trabalho e comece a organizar tudo em um só lugar: compras, tarefas, filmes, ideias e o que mais quiser.</p>
-        
-        <div style="text-align: center;">
-            <a class="btn btn-maingreen btn-lg text-mainwhite" href="https://www.w3schools.com">Começar a listar</a>
+    <div class="content">
+        <div class="box home" style="margin: 0; width: 100%;">
+            <h1>Listas compartilhadas, simples como devem ser</h1>
+            <p>Crie grupos com amigos, família ou colegas de trabalho e comece a organizar tudo em um só lugar: compras, tarefas, filmes, ideias e o que mais quiser.</p>
+            
+            <div style="text-align: center;">
+                <a class="btn btn-maingreen btn-lg text-mainwhite" href="cadastro.php">Começar a listar</a>
+            </div>
+            
+            <h1>Organize-se junto de quem importa</h1>
+            <p><span style="font-weight: 700">‍Crie grupos privados</span><br>
+            Monte grupos com quem você quiser: amigos, parceiros, família, colegas.<br>
+            <br>
+            <span style="font-weight: 700">Monte listas colaborativas</span><br>
+            Todos os membros do grupo podem adicionar, editar e marcar itens.<br>
+            <br>
+            <span style="font-weight: 700">Receba atualizações em tempo real</span><br>
+            Quando alguém altera uma lista, todos são atualizados automaticamente.<br>
+            <br>
+            <span style="font-weight: 700">Acesse de qualquer lugar</span><br>
+            Listsy funciona no seu celular, tablet ou computador — sem precisar instalar nada.</p>
         </div>
-        
-        <h1>Organize-se junto de quem importa</h1>
-        <p><span style="font-weight: 700">‍Crie grupos privados</span><br>
-        Monte grupos com quem você quiser: amigos, parceiros, família, colegas.<br>
-        <br>
-        <span style="font-weight: 700">Monte listas colaborativas</span><br>
-        Todos os membros do grupo podem adicionar, editar e marcar itens.<br>
-        <br>
-        <span style="font-weight: 700">Receba atualizações em tempo real</span><br>
-        Quando alguém altera uma lista, todos são atualizados automaticamente.<br>
-        <br>
-        <span style="font-weight: 700">Acesse de qualquer lugar</span><br>
-        Listsy funciona no seu celular, tablet ou computador — sem precisar instalar nada.</p>
     </div>
     <?php include 'components/footer.php'; ?>
 </body>

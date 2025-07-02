@@ -1,6 +1,6 @@
 <nav class="navbar">
   <!-- Título -->
-  <div><a href="https://www.w3schools.com"><h1>Listsy</h1></a></div>
+  <div><a href="index.php"><h1>Listsy</h1></a></div>
   <!-- Direita -->
   <?php $logado = 0 ?>
 
@@ -12,8 +12,8 @@
   <?php endif ?>
   <?php if ($logado ==0): ?>
   <div class="navbar_items">
-    <a href="https://www.w3schools.com"><h2>Cadastrar-se</h2></a>
-    <a href="https://www.w3schools.com"><h3>Já tenho uma conta<h3></a>
+    <a href="cadastro.php"><h2>Cadastrar-se</h2></a>
+    <a href="login.php"><h3>Já tenho uma conta<h3></a>
   </div>
   <?php endif ?>
 </nav>
