@@ -12,7 +12,7 @@
 <body>
     <?php include 'components/navbar.php'; ?>
     <div class="content">
-        <div class="box home" style="margin: 0; width: 100%;">
+        <div class="box home">
             <h1>Listas compartilhadas, simples como devem ser</h1>
             <p>Crie grupos com amigos, família ou colegas de trabalho e comece a organizar tudo em um só lugar: compras, tarefas, filmes, ideias e o que mais quiser.</p>
             

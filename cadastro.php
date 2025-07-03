@@ -17,7 +17,7 @@
             <h2>Cadastro</h2>
             <!--Faça sua mágica-->
             <forms>
-                <input type="text" id="username" placeholder="Nome de Usuário" style="margin-bottom: 30px">
+                <input type="text" id="username" placeholder="Nome de Usuário" style="margin-bottom: 30px" maxlength="20">
                 <input type="password" id="password" placeholder="Senha">
                 <input type="password" id="password-repeat" placeholder="Repita a Senha">
                 <div style="text-align: center;">
