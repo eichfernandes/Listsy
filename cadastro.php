@@ -7,7 +7,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/style.css">
-    <title>Listsy - Home</title>
+    <title>Listsy - Cadastro</title>
 </head>
 <body>
     <?php include 'components/navbar.php'; ?>

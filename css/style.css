@@ -285,6 +285,46 @@ input::placeholder{
     cursor: pointer;
 }
 
+/* BARRA DE NAVEGAÇÃO */
+.item{
+    background-color: var(--cor-superbranco);
+    padding: 10px 20px;
+    height: clamp(40px, 13vw, 60px);
+    display: flex;
+    align-items: center;
+    box-shadow: 0px 3.2px 16px rgb(0, 0, 0, 0.07);
+    font-size: clamp(16px, 1.5vw, 22px);
+}
+
+.item input{
+    border: none;
+    background: transparent;
+    outline: none;
+    box-shadow: none;
+    padding: 0px;
+    margin: 0px;
+    width: clamp(100px, 40vw, 500px);
+    font-size: clamp(16px, 1.5vw, 20px);
+}
+
+input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2.5px solid var(--cor-texto);
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+  position: relative;
+}
+
+
+input[type="checkbox"]:checked {
+  background-color: var(--cor-texto);
+}
+
+
 
 /* BARRA DE NAVEGAÇÃO */
 

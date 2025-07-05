@@ -7,7 +7,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/style.css">
-    <title>Listsy - Grupo</title>
+    <title>Listsy - Família</title>
     <style>
         .editable-container {
         display: inline-flex;
@@ -104,7 +104,7 @@
                 }
 
                 // Chamando 3 exemplos aleatórios, aqui deve entrar um código para ler no BD e chamar no formato correto
-                echo criarLista("Compra de Mercado");
+                echo criarLista("Compras de Mercado");
                 echo criarLista("Afazeres da Casa");
                 echo criarLista("Móveis da Casa");
                 ?>
