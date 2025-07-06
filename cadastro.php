@@ -16,14 +16,14 @@
             <h1>Listsy</h1>
             <h2>Cadastro</h2>
             <!--Faça sua mágica-->
-            <forms>
-                <input type="text" id="username" placeholder="Nome de Usuário" style="margin-bottom: 30px" maxlength="20">
-                <input type="password" id="password" placeholder="Senha">
-                <input type="password" id="password-repeat" placeholder="Repita a Senha">
+            <form method="POST" action="cadastrar.php">
+                <input type="text" name="username" placeholder="Nome de Usuário" style="margin-bottom: 30px" maxlength="20" required>
+                <input type="password" name="password" placeholder="Senha" required>
+                <input type="password" name="password_repeat" placeholder="Repita a Senha" required>
                 <div style="text-align: center;">
-                    <button type="button" class="btn btn-maingreen text-mainwhite">Cadastrar</a>
+                    <button type="submit" class="btn btn-maingreen text-mainwhite">Cadastrar</button>
                 </div>
-            </forms>
+            </form>
             <p>Já tem uma conta? <a href="login.php" style="font-weight: 700;">Clique aqui para entrar</a></p>
         </div>
     </div>
