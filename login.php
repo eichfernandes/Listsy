@@ -16,13 +16,13 @@
             <h1>Listsy</h1>
             <h2>Login</h2>
             <!--Faça sua mágica-->
-            <forms>
-                <input type="text" id="username" placeholder="Nome de Usuário">
-                <input type="password" id="password" placeholder="Senha">
+            <form method="POST" action="logar.php">
+                <input type="text" name="username" placeholder="Nome de Usuário" required>
+                <input type="password" name="password" placeholder="Senha" required>
                 <div style="text-align: center;">
-                    <button type="button" class="btn btn-maingreen text-mainwhite">Entrar</a>
+                    <button type="submit" class="btn btn-maingreen text-mainwhite">Entrar</button>
                 </div>
-            </forms>
+            </form>
             <p>Não tem uma conta? <a href="cadastro.php" style="font-weight: 700;">Cadastre-se aqui</a></p>
         </div>
     </div>
