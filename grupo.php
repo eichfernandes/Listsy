@@ -112,7 +112,7 @@
 
 
                 <!--Deve redirecionar para os membros do grupo corretamente-->
-                <a href="membros.php">
+                <a href="membros.php?id=<?php echo $grupo_id; ?>">
                 <div class="icon-text clicavel">
                     <h2 style="text-align: right;">Ver Membros</h2>
                 </div>

@@ -14,69 +14,105 @@
     </style>
 </head>
 <body>
-    <?php include 'components/navbar.php'; ?>
+    <?php 
+    session_start();
+    if (!isset($_SESSION['user_id'])) {
+        header("Location: login.php");
+        exit;
+    }
+    
+    require_once 'config/database.php';
+    $grupo_id = $_GET['id'] ?? 0;
+    
+    try {
+        $stmt = $pdo->prepare("SELECT g.nome, g.admin_id FROM grupos g 
+                              JOIN membros_grupo mg ON g.id = mg.grupo_id 
+                              WHERE g.id = ? AND mg.usuario_id = ?");
+        $stmt->execute([$grupo_id, $_SESSION['user_id']]);
+        $grupo = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if (!$grupo) {
+            header("Location: meus-grupos.php");
+            exit;
+        }
+        
+        $is_admin = ($grupo['admin_id'] == $_SESSION['user_id']);
+    } catch(PDOException $e) {
+        header("Location: meus-grupos.php");
+        exit;
+    }
+    
+    include 'components/navbar.php'; 
+    ?>
     <div class="content">
         <div class="box pag-membros-convites">
             <!--Essa página aqui só deve ser acessada se o usuário estiver logado-->
             <div class="title">
                 <!--Mude esse H1 e o title da página para o respectivo grupo acessado na navegação-->
-                <h1>Membros em Família</h1>
+                <h1>Membros em <?php echo htmlspecialchars($grupo['nome']); ?></h1>
             </div>
-            <div class="add-person" style="margin-bottom:35px;">
-                <input type="text" placeholder="Usuário a adicionar">
-                <!--Usar como envio para o input acima-->
-                <button class="box-svg">
+            <?php if ($is_admin): ?>
+            <form class="add-person" style="margin-bottom:35px;" method="POST" action="convidar_membro.php">
+                <input type="hidden" name="grupo_id" value="<?php echo $grupo_id; ?>">
+                <input type="text" name="username" placeholder="Usuário a adicionar" required>
+                <button type="submit" class="box-svg">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-fill-add" viewBox="0 0 16 16">
                     <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0m-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
                     <path d="M2 13c0 1 1 1 1 1h5.256A4.5 4.5 0 0 1 8 12.5a4.5 4.5 0 0 1 1.544-3.393Q8.844 9.002 8 9c-5 0-6 3-6 4"/>
                     </svg>
                 </button>
-            </div>
+            </form>
+            <?php endif; ?>
 
             <!--Aqui eu entro com o grid de membros e faço a função que é usada para gerar membros no grid-->
             <div class="list-container">
                 <?php
-                function criarMembro($nomePessoa) {
-                    $nomePessoa = htmlspecialchars($nomePessoa);
-                    // Esse nome seguro é pra evitar XSS
+                try {
+                    $stmt = $pdo->prepare("SELECT u.id, u.username FROM usuarios u 
+                                          JOIN membros_grupo mg ON u.id = mg.usuario_id 
+                                          WHERE mg.grupo_id = ? ORDER BY u.username");
+                    $stmt->execute([$grupo_id]);
+                    $membros = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     
-                    // Altere a Div conforme necessário 
-                    return "
-                    <div class=\"membro title\" style=\"margin: 0;\">
-                        <span>
-                            $nomePessoa
-                        </span>
-
-                        <!--USAR ESTE ICONE SOMENTE SE FOR O ADM-->
-                        <!--
-                        <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-person-fill-gear\" viewBox=\"0 0 16 16\">
-                        <path d=\"M11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0m-9 8c0 1 1 1 1 1h5.256A4.5 4.5 0 0 1 8 12.5a4.5 4.5 0 0 1 1.544-3.393Q8.844 9.002 8 9c-5 0-6 3-6 4m9.886-3.54c.18-.613 1.048-.613 1.229 0l.043.148a.64.64 0 0 0 .921.382l.136-.074c.561-.306 1.175.308.87.869l-.075.136a.64.64 0 0 0 .382.92l.149.045c.612.18.612 1.048 0 1.229l-.15.043a.64.64 0 0 0-.38.921l.074.136c.305.561-.309 1.175-.87.87l-.136-.075a.64.64 0 0 0-.92.382l-.045.149c-.18.612-1.048.612-1.229 0l-.043-.15a.64.64 0 0 0-.921-.38l-.136.074c-.561.305-1.175-.309-.87-.87l.075-.136a.64.64 0 0 0-.382-.92l-.148-.045c-.613-.18-.613-1.048 0-1.229l.148-.043a.64.64 0 0 0 .382-.921l-.074-.136c-.306-.561.308-1.175.869-.87l.136.075a.64.64 0 0 0 .92-.382zM14 12.5a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0\"/>
-                        </svg>
-                        -->
-
-                        <!--USAR ESTE ICONE PARA OS DEMAIS-->
-                        <!--TRANSFORMAR ESTE EM BOTÃO PARA DELEÇÃO-->
-                        <!--COLOQUE UM DAQLES ALERT OU SLA ANTES DE CONFIRMAR A DELEÇÃO-->
-                        <button>
-                            <svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"currentColor\" class=\"bi bi-trash3-fill\" viewBox=\"0 0 16 16\" style=\"max-width: 25px;\">
-                            <path d=\"M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5\"/>
-                            </svg>
-                        </button>
-                    </div>
-                    ";
+                    foreach ($membros as $membro) {
+                        $nomeSeguro = htmlspecialchars($membro['username']);
+                        $is_group_admin = ($membro['id'] == $grupo['admin_id']);
+                        
+                        echo "<div class='membro title' style='margin: 0;'>";
+                        echo "<span>$nomeSeguro";
+                        
+                        if ($is_group_admin) {
+                            echo " <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-person-fill-gear' viewBox='0 0 16 16'>
+                                  <path d='M11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0m-9 8c0 1 1 1 1 1h5.256A4.5 4.5 0 0 1 8 12.5a4.5 4.5 0 0 1 1.544-3.393Q8.844 9.002 8 9c-5 0-6 3-6 4m9.886-3.54c.18-.613 1.048-.613 1.229 0l.043.148a.64.64 0 0 0 .921.382l.136-.074c.561-.306 1.175.308.87.869l-.075.136a.64.64 0 0 0 .382.92l.149.045c.612.18.612 1.048 0 1.229l-.15.043a.64.64 0 0 0-.38.921l.074.136c.305.561-.309 1.175-.87.87l-.136-.075a.64.64 0 0 0-.92.382l-.045.149c-.18.612-1.048.612-1.229 0l-.043-.15a.64.64 0 0 0-.921-.38l-.136.074c-.561.305-1.175-.309-.87-.87l.075-.136a.64.64 0 0 0-.382-.92l-.148-.045c-.613-.18-.613-1.048 0-1.229l.148-.043a.64.64 0 0 0 .382-.921l-.074-.136c-.306-.561.308-1.175.869-.87l.136.075a.64.64 0 0 0 .92-.382zM14 12.5a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0'/>
+                                  </svg>";
+                        }
+                        
+                        echo "</span>";
+                        
+                        if ($is_admin && $membro['id'] != $_SESSION['user_id']) {
+                            echo "<button onclick='if(confirm(\"Remover membro?\")) window.location.href=\"remover_membro.php?grupo_id=$grupo_id&usuario_id={$membro['id']}\"'>";
+                            echo "<svg xmlns='http://www.w3.org/2000/svg' fill='currentColor' class='bi bi-trash3-fill' viewBox='0 0 16 16' style='max-width: 25px;'>";
+                            echo "<path d='M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5'/>";
+                            echo "</svg></button>";
+                        }
+                        
+                        echo "</div>";
+                    }
+                } catch(PDOException $e) {
+                    echo "<p>Erro ao carregar membros.</p>";
                 }
-
-                // Chamando 3 exemplos aleatórios, aqui deve entrar um código para ler no BD e chamar no formato correto
-                echo criarMembro("Eich_Rafael");
-                echo criarMembro("Gabriel");
-                echo criarMembro("GabiEich");
                 ?>
             </div>
             <div style="text-align: center; margin-top: 40px;">
-            <!--Já sabe o que faze aqui-->
-                <button>
-                    <h3>Sair do Grupo</h3>
-                </button>
+                <?php if ($is_admin): ?>
+                    <button onclick="if(confirm('ATENÇÃO: Isso apagará o grupo e todas as listas! Tem certeza?')) window.location.href='apagar_grupo.php?grupo_id=<?php echo $grupo_id; ?>'" style="color: #dc3545;">
+                        <h3>Apagar Grupo</h3>
+                    </button>
+                <?php else: ?>
+                    <button onclick="if(confirm('Tem certeza que deseja sair do grupo?')) window.location.href='sair_grupo.php?grupo_id=<?php echo $grupo_id; ?>'">
+                        <h3>Sair do Grupo</h3>
+                    </button>
+                <?php endif; ?>
             </div>
         </div>
     </div>
