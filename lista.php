@@ -10,7 +10,6 @@ require_once 'config/database.php';
 $lista_id = $_GET['id'] ?? 0;
 $user_id = $_SESSION['user_id'];
 
-// Verificar se o usuário tem acesso à lista
 try {
     $stmt = $pdo->prepare("
         SELECT l.*, g.nome as grupo_nome 
@@ -31,7 +30,6 @@ try {
     exit;
 }
 
-// Processar ações
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['action'])) {
         switch ($_POST['action']) {
@@ -115,7 +113,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php include 'components/navbar.php'; ?>
     <div class="content">
         <div class="box pag-membros-convites">
-            <!--Essa página aqui só deve ser acessada se o usuário estiver logado-->
             <div class="title">
                 <div class="editable-container">
                     <h1 id="titulo"><?= htmlspecialchars($lista['nome']) ?></h1>
@@ -203,7 +200,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         form.submit();
     }
     
-    // Funcionalidade de editar nome da lista
     const titulo = document.getElementById('titulo');
     const btnEditar = document.getElementById('editar');
     const editor = document.getElementById('editor');
@@ -224,7 +220,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     });
     </script>
     
-    <!-- Modal Remover Itens Marcados -->
     <div class="modal fade" id="modalRemoverMarcados" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">

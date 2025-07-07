@@ -152,7 +152,6 @@
     ?>
     <div class="content">
         <div class="box pag-membros-convites">
-            <!--Essa página aqui só deve ser acessada se o usuário estiver logado-->
             <div class="title">
                 <h1>Membros em <?php echo htmlspecialchars($grupo['nome']); ?></h1>
             </div>
@@ -177,7 +176,6 @@
             </form>
             <?php endif; ?>
 
-            <!--Aqui eu entro com o grid de membros e faço a função que é usada para gerar membros no grid-->
             <div class="list-container">
                 <?php
                 try {
@@ -290,7 +288,7 @@
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                             <form method="POST" style="display: inline;">
                                 <input type="hidden" name="action" value="sair_grupo">
-                                <button type="submit" class="btn btn-warning">Sair do Grupo</button>
+                                <button type="submit" class="btn btn-danger">Sair do Grupo</button>
                             </form>
                         </div>
                     </div>

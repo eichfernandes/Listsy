@@ -42,7 +42,6 @@
     $message = '';
     $message_type = '';
     
-    // Processar atualização do nome
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'update_grupo_nome') {
         $nome = trim($_POST['nome']);
         
@@ -65,7 +64,6 @@
         }
         
         if (!empty($message)) {
-            // Só redireciona se não houver erro
         } else {
             header("Location: grupo.php?id=$grupo_id");
             exit;
@@ -94,9 +92,7 @@
     ?>
     <div class="content">
         <div class="box">
-            <!--Essa página aqui só deve ser acessada se o usuário estiver logado-->
             <div class="title">
-                <!--Mude esse H1 e o title da página para o respectivo grupo acessado na navegação-->
                 <div class="editable-container">
                     <h1 id="titulo"><?php echo htmlspecialchars($grupo['nome']); ?></h1>
                     <?php if ($is_admin): ?>
@@ -125,7 +121,6 @@
                         </svg>
                     </button>
                 </form>
-                <!--Esse script permite a edição do titúlo da página, faça que altere no BD também-->
                 <script>
                     const titulo = document.getElementById('titulo');
                     const btnEditar = document.getElementById('editar');
@@ -151,14 +146,12 @@
 
 
 
-                <!--Deve redirecionar para os membros do grupo corretamente-->
                 <a href="membros.php?id=<?php echo $grupo_id; ?>">
                 <div class="icon-text clicavel">
                     <h2 style="text-align: right;">Ver Membros</h2>
                 </div>
                 </a>
             </div>
-            <!--Aqui eu entro com o grid de listas e faço a função que é usada para gerar itens no grid-->
             <div class="grid-container">
                 <?php
                 try {

@@ -5,13 +5,11 @@ require_once 'config/database.php';
 $message = '';
 $message_type = '';
 
-// Verificar se precisa mostrar aviso de login necessário
 if (isset($_GET['redirect']) && $_GET['redirect'] === 'login_required') {
     $message = 'Você precisa fazer login para acessar esta página.';
     $message_type = 'warning';
 }
 
-// Processar login
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = trim($_POST['username']);
     $password = $_POST['password'];

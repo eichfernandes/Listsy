@@ -20,7 +20,6 @@
     ?>
     <div class="content">
         <div class="box">
-            <!--Essa página aqui só deve ser acessada se o usuário estiver logado-->
             <div class="title">
                 <h1>Meus Grupos</h1>
                 <a href="convites.php">
@@ -32,7 +31,6 @@
                 </div>
                 </a>
             </div>
-            <!--Aqui eu entro com o grid de grupos e faço a função que é usada para gerar itens no grid-->
             <div class="grid-container">
                 <?php
                 require_once 'config/database.php';

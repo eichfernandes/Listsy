@@ -24,13 +24,11 @@
     $message = '';
     $message_type = '';
     
-    // Processar resposta ao convite
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         $convite_id = $_POST['convite_id'];
-        $resposta = $_POST['resposta']; // 'aceitar' ou 'recusar'
+        $resposta = $_POST['resposta'];
         
         try {
-            // Verificar se o convite é para o usuário logado
             $stmt = $pdo->prepare("SELECT grupo_id, usuario_convidado_id FROM convites WHERE id = ? AND usuario_convidado_id = ? AND status = 'pendente'");
             $stmt->execute([$convite_id, $_SESSION['user_id']]);
             $convite = $stmt->fetch();
@@ -40,18 +38,16 @@
                 $message_type = 'danger';
             } else {
                 if ($resposta === 'aceitar') {
-                    // Adicionar como membro
+            
                     $stmt = $pdo->prepare("INSERT INTO membros_grupo (grupo_id, usuario_id) VALUES (?, ?)");
                     $stmt->execute([$convite['grupo_id'], $_SESSION['user_id']]);
                     
-                    // Atualizar status do convite
                     $stmt = $pdo->prepare("UPDATE convites SET status = 'aceito' WHERE id = ?");
                     $stmt->execute([$convite_id]);
                     
                     $message = 'Convite aceito com sucesso!';
                     $message_type = 'success';
                 } else {
-                    // Recusar convite
                     $stmt = $pdo->prepare("UPDATE convites SET status = 'recusado' WHERE id = ?");
                     $stmt->execute([$convite_id]);
                     
@@ -68,7 +64,6 @@
     ?>
     <div class="content">
         <div class="box pag-membros-convites">
-            <!--Essa página aqui só deve ser acessada se o usuário estiver logado-->
             <div class="title">
                 <h1>Convites 
                     <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-envelope-fill" viewBox="0 0 16 16">
@@ -84,8 +79,6 @@
                 </div>
             <?php endif; ?>
 
-            <!--bota pra aceitar os convite no alert mesmo pae-->
-            <!--Clica no convite >> Quer entrar? >> Sim ou Não-->
             <div class="list-container">
                 <?php
                 require_once 'config/database.php';

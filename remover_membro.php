@@ -11,7 +11,6 @@ $grupo_id = $_GET['grupo_id'];
 $usuario_id = $_GET['usuario_id'];
 
 try {
-    // Verificar se é admin
     $stmt = $pdo->prepare("SELECT admin_id FROM grupos WHERE id = ?");
     $stmt->execute([$grupo_id]);
     $grupo = $stmt->fetch();
@@ -21,7 +20,6 @@ try {
         exit;
     }
     
-    // Não pode remover a si mesmo
     if ($usuario_id == $_SESSION['user_id']) {
         echo "<script>alert('Não pode remover a si mesmo!'); window.history.back();</script>";
         exit;

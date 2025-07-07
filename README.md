@@ -59,15 +59,20 @@ Desenvolvimento Web/
 ├── 📁 components/          # Componentes reutilizáveis
 ├── 📁 config/             # Configurações do sistema
 │   └── database.php       # Conexão com MySQL
-├── 📁 css/               # Estilos e temas
+├── 📁 css/               # Estilos e temas customizados
+├── 📁 elements/          # Recursos visuais
 ├── 📄 index.php          # Página inicial
-├── 📄 cadastro.php       # Registro de usuários
-├── 📄 login.php          # Autenticação
+├── 📄 cadastro.php       # Registro integrado
+├── 📄 login.php          # Autenticação integrada
 ├── 📄 meus-grupos.php    # Dashboard de grupos
-├── 📄 grupo.php          # Visualização do grupo
-├── 📄 lista.php          # Gerenciamento de listas
-├── 📄 membros.php        # Administração de membros
-├── 📄 convites.php       # Sistema de convites
+├── 📄 grupo.php          # Visualização e edição de grupos
+├── 📄 lista.php          # Gerenciamento completo de listas
+├── 📄 membros.php        # Administração total de membros
+├── 📄 convites.php       # Sistema completo de convites
+├── 📄 criar_grupo.php    # Criação de grupos
+├── 📄 criar_lista.php    # Criação de listas
+├── 📄 remover_membro.php # Remoção de membros
+├── 📄 logout.php         # Encerramento de sessão
 └── 📄 database.sql       # Schema do banco
 ```
 
