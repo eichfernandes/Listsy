@@ -10,6 +10,7 @@
     <title>Listsy - Login</title>
 </head>
 <body>
+    <?php include 'auth_check.php'; ?>
     <?php include 'components/navbar.php'; ?>
     <div class="content">
         <div class="box login-cadastro">
