@@ -121,28 +121,27 @@
             <!--Aqui eu entro com o grid de listas e faço a função que é usada para gerar itens no grid-->
             <div class="grid-container">
                 <?php
-                function criarLista($nomeLista) {
-                    $nomeSeguro = htmlspecialchars($nomeLista);
-                    // Esse nome seguro é pra evitar XSS
+                try {
+                    $stmt = $pdo->prepare("SELECT id, nome FROM listas WHERE grupo_id = ? ORDER BY data_criacao DESC");
+                    $stmt->execute([$grupo_id]);
+                    $listas = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     
-                    // Altere a Div conforme necessário para que ao clicar nela redirecione para a lista correta
-                    return "
-                    <div class=\"lista\">
-                        <span>
-                            <h3>$nomeSeguro</h3>
-                        </span>
-                    </div>
-                    ";
+                    foreach ($listas as $lista) {
+                        $nomeSeguro = htmlspecialchars($lista['nome']);
+                        echo "
+                        <div class='lista' onclick='window.location.href=\"lista.php?id={$lista['id']}\"'>
+                            <span>
+                                <h3>$nomeSeguro</h3>
+                            </span>
+                        </div>
+                        ";
+                    }
+                } catch(PDOException $e) {
+                    echo "<p>Erro ao carregar listas.</p>";
                 }
-
-                // Chamando 3 exemplos aleatórios, aqui deve entrar um código para ler no BD e chamar no formato correto
-                echo criarLista("Compras de Mercado");
-                echo criarLista("Afazeres da Casa");
-                echo criarLista("Móveis da Casa");
                 ?>
 
-                <!--Faça algo que ao clicar nessa div aqui abaixo seja criado uma lista chamado "Nova Lista"-->
-                <div class="lista novo">
+                <div class="lista novo" onclick="window.location.href='criar_lista.php?grupo_id=<?php echo $grupo_id; ?>'">
                     +
                 </div>
             </div>
