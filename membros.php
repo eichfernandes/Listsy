@@ -17,12 +17,73 @@
     <?php 
     session_start();
     if (!isset($_SESSION['user_id'])) {
-        header("Location: login.php");
+        header("Location: login.php?redirect=login_required");
         exit;
     }
     
     require_once 'config/database.php';
     $grupo_id = $_GET['id'] ?? 0;
+    
+    $message = '';
+    $message_type = '';
+    
+    // Processar convite
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'convidar') {
+        $username = trim($_POST['username']);
+        
+        try {
+            // Verificar se é admin
+            $stmt = $pdo->prepare("SELECT admin_id FROM grupos WHERE id = ?");
+            $stmt->execute([$grupo_id]);
+            $grupo_check = $stmt->fetch();
+            
+            if ($grupo_check['admin_id'] != $_SESSION['user_id']) {
+                $message = 'Sem permissão!';
+                $message_type = 'danger';
+            } elseif (empty($username)) {
+                $message = 'Nome de usuário é obrigatório!';
+                $message_type = 'danger';
+            } else {
+                // Buscar usuário
+                $stmt = $pdo->prepare("SELECT id FROM usuarios WHERE username = ?");
+                $stmt->execute([$username]);
+                $usuario = $stmt->fetch();
+                
+                if (!$usuario) {
+                    $message = 'Usuário não encontrado!';
+                    $message_type = 'danger';
+                } else {
+                    // Verificar se já é membro
+                    $stmt = $pdo->prepare("SELECT id FROM membros_grupo WHERE grupo_id = ? AND usuario_id = ?");
+                    $stmt->execute([$grupo_id, $usuario['id']]);
+                    
+                    if ($stmt->rowCount() > 0) {
+                        $message = 'Usuário já é membro!';
+                        $message_type = 'warning';
+                    } else {
+                        // Verificar se já existe convite pendente
+                        $stmt = $pdo->prepare("SELECT id FROM convites WHERE grupo_id = ? AND usuario_convidado_id = ? AND status = 'pendente'");
+                        $stmt->execute([$grupo_id, $usuario['id']]);
+                        
+                        if ($stmt->rowCount() > 0) {
+                            $message = 'Já existe um convite pendente para este usuário!';
+                            $message_type = 'warning';
+                        } else {
+                            // Criar convite
+                            $stmt = $pdo->prepare("INSERT INTO convites (grupo_id, usuario_convidado_id, usuario_convidador_id, status) VALUES (?, ?, ?, 'pendente')");
+                            $stmt->execute([$grupo_id, $usuario['id'], $_SESSION['user_id']]);
+                            
+                            $message = 'Convite enviado com sucesso!';
+                            $message_type = 'success';
+                        }
+                    }
+                }
+            }
+        } catch(PDOException $e) {
+            $message = 'Erro ao enviar convite!';
+            $message_type = 'danger';
+        }
+    }
     
     try {
         $stmt = $pdo->prepare("SELECT g.nome, g.admin_id FROM grupos g 
@@ -48,13 +109,20 @@
         <div class="box pag-membros-convites">
             <!--Essa página aqui só deve ser acessada se o usuário estiver logado-->
             <div class="title">
-                <!--Mude esse H1 e o title da página para o respectivo grupo acessado na navegação-->
                 <h1>Membros em <?php echo htmlspecialchars($grupo['nome']); ?></h1>
             </div>
+            
+            <?php if (!empty($message)): ?>
+                <div class="alert alert-<?= $message_type ?> alert-dismissible fade show" role="alert">
+                    <?= htmlspecialchars($message) ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            <?php endif; ?>
+            
             <?php if ($is_admin): ?>
-            <form class="add-person" style="margin-bottom:35px;" method="POST" action="convidar_membro.php">
-                <input type="hidden" name="grupo_id" value="<?php echo $grupo_id; ?>">
-                <input type="text" name="username" placeholder="Usuário a adicionar" required>
+            <form class="add-person" style="margin-bottom:35px;" method="POST">
+                <input type="hidden" name="action" value="convidar">
+                <input type="text" name="username" placeholder="Usuário a adicionar" required value="<?= htmlspecialchars($_POST['username'] ?? '') ?>">
                 <button type="submit" class="box-svg">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-fill-add" viewBox="0 0 16 16">
                     <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0m-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
