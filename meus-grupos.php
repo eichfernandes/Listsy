@@ -10,7 +10,14 @@
     <title>Listsy - Grupos</title>
 </head>
 <body>
-    <?php include 'components/navbar.php'; ?>
+    <?php 
+    session_start();
+    if (!isset($_SESSION['user_id'])) {
+        header("Location: login.php");
+        exit;
+    }
+    include 'components/navbar.php'; 
+    ?>
     <div class="content">
         <div class="box">
             <!--Essa página aqui só deve ser acessada se o usuário estiver logado-->
@@ -28,32 +35,43 @@
             <!--Aqui eu entro com o grid de grupos e faço a função que é usada para gerar itens no grid-->
             <div class="grid-container">
                 <?php
-                function criarGrupo($nomeGrupo, $numMembros, $numListas) {
-                    $nomeSeguro = htmlspecialchars($nomeGrupo);
-                    // Esse nome seguro é pra evitar XSS
+                require_once 'config/database.php';
+                
+                try {
+                    $stmt = $pdo->prepare("
+                        SELECT g.id, g.nome,
+                               COUNT(DISTINCT mg.usuario_id) as num_membros,
+                               COUNT(DISTINCT l.id) as num_listas
+                        FROM grupos g
+                        LEFT JOIN membros_grupo mg ON g.id = mg.grupo_id
+                        LEFT JOIN listas l ON g.id = l.grupo_id
+                        WHERE g.id IN (SELECT grupo_id FROM membros_grupo WHERE usuario_id = ?)
+                        GROUP BY g.id, g.nome
+                        ORDER BY g.data_criacao DESC
+                    ");
+                    $stmt->execute([$_SESSION['user_id']]);
+                    $grupos = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     
-                    // Altere a Div conforme necessário para que ao clicar nela redirecione para o grupo correto
-                    return "
-                    <div class=\"grupo\">
-                        <span>
-                            <h3>$nomeSeguro</h3>
-                            <ul>
-                                <li>$numMembros Membro(s)</li>
-                                <li>$numListas Lista(s)</li>
-                            </ul>
-                        </span>
-                    </div>
-                    ";
+                    foreach ($grupos as $grupo) {
+                        $nomeSeguro = htmlspecialchars($grupo['nome']);
+                        echo "
+                        <div class='grupo' onclick='window.location.href=\"grupo.php?id={$grupo['id']}\"'>
+                            <span>
+                                <h3>$nomeSeguro</h3>
+                                <ul>
+                                    <li>{$grupo['num_membros']} Membro(s)</li>
+                                    <li>{$grupo['num_listas']} Lista(s)</li>
+                                </ul>
+                            </span>
+                        </div>
+                        ";
+                    }
+                } catch(PDOException $e) {
+                    echo "<p>Erro ao carregar grupos.</p>";
                 }
-
-                // Chamando 3 exemplos aleatórios, aqui deve entrar um código para ler no BD e chamar no formato correto
-                echo criarGrupo("Pessoal da Faculdade", 3, 4);
-                echo criarGrupo("Processo Seletivo Focus Consultoria", 13, 2);
-                echo criarGrupo("Família", 7, 3);
                 ?>
 
-                <!--Faça algo que ao clicar nessa div aqui abaixo seja criado um grupo chamado "Novo Grupo"-->
-                <div class="grupo novo">
+                <div class="grupo novo" onclick="window.location.href='criar_grupo.php'">
                     +
                 </div>
             </div>
