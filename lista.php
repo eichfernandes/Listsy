@@ -147,12 +147,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </button>
             </form>
             <div style="text-align: right; margin-bottom: 20px;">
-                <form method="POST" onsubmit="return confirm('Tem certeza que deseja remover todos os itens marcados?')">
-                    <input type="hidden" name="action" value="remove_checked">
-                    <button type="submit">
-                        <h3>Remover todos os itens marcados</h3>
-                    </button>
-                </form>
+                <button type="button" data-bs-toggle="modal" data-bs-target="#modalRemoverMarcados">
+                    <h3>Remover todos os itens marcados</h3>
+                </button>
             </div>
             <div class="list-container">
                 <?php
@@ -226,5 +223,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     });
     </script>
+    
+    <!-- Modal Remover Itens Marcados -->
+    <div class="modal fade" id="modalRemoverMarcados" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Remover Itens Marcados</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Tem certeza que deseja remover <strong>todos os itens marcados</strong> da lista?</p>
+                    <p>Esta ação não pode ser desfeita.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <form method="POST" style="display: inline;">
+                        <input type="hidden" name="action" value="remove_checked">
+                        <button type="submit" class="btn btn-danger">Remover Itens</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
