@@ -2,90 +2,98 @@
 
 <div align="center">
   <img src="https://img.shields.io/badge/PHP-308585?style=for-the-badge&logo=php&logoColor=E6F4F5" alt="PHP">
-  <img src="https://img.shields.io/badge/Bootstrap-57A2A2?style=for-the-badge&logo=bootstrap&logoColor=E6F4F5" alt="Bootstrap">
-  <img src="https://img.shields.io/badge/CSS3-308585?style=for-the-badge&logo=css3&logoColor=E6F4F5" alt="CSS3">
+  <img src="https://img.shields.io/badge/MySQL-57A2A2?style=for-the-badge&logo=mysql&logoColor=E6F4F5" alt="MySQL">
+  <img src="https://img.shields.io/badge/Bootstrap-308585?style=for-the-badge&logo=bootstrap&logoColor=E6F4F5" alt="Bootstrap">
   <img src="https://img.shields.io/badge/JavaScript-222C2C?style=for-the-badge&logo=javascript&logoColor=E6F4F5" alt="JavaScript">
 </div>
 
-## 🎨 Sobre o Projeto
+## 🎯 Sobre o Projeto
 
-**Listsy** é uma aplicação web para criação e gerenciamento de listas colaborativas. Organize-se junto de quem importa através de grupos privados onde todos podem contribuir em tempo real.
+**Listsy** é uma plataforma web colaborativa para gerenciamento de listas em grupos. Desenvolvida para facilitar a organização compartilhada entre famílias, equipes e comunidades através de um sistema intuitivo e responsivo.
 
-### ✨ Características Visuais
+### 🎨 Design System
 
-- **🎨 Paleta de Cores Personalizada:**
-  - Verde Principal: `#308585` (maingreen)
-  - Verde Navbar: `#57A2A2` 
+- **Paleta de Cores:**
+  - Verde Principal: `#308585`
+  - Verde Secundário: `#57A2A2`
   - Fundo Escuro: `#222C2C`
-  - Branco Suave: `#E6F4F5` (mainwhite)
-  - Super Branco: `#F5FEFF`
+  - Branco Principal: `#E6F4F5`
 
-- **📱 Design Responsivo:** Interface adaptável para desktop, tablet e mobile
-- **🌈 Gradiente Elegante:** Transição suave do verde para o fundo escuro
-- **💫 Efeitos Visuais:** Sombras suaves e hover effects para melhor UX
+- **Interface Responsiva** com Bootstrap 5.3.7 customizado
+- **Experiência Otimizada** para desktop e dispositivos móveis
 
-## 🚀 Funcionalidades
+## ⚡ Funcionalidades
 
-### 👥 Grupos Colaborativos
-- Crie grupos privados com amigos, família ou colegas
-- Gerencie membros e permissões
-- Sistema de convites por usuário
+### 🔐 Autenticação
+- Sistema de cadastro e login seguro
+- Controle de sessões e permissões
+- Proteção contra acesso não autorizado
 
-### 📋 Listas Inteligentes
-- Listas colaborativas em tempo real
-- Adicione, edite e marque itens
-- Organização por categorias
+### 👥 Gerenciamento de Grupos
+- Criação e administração de grupos privados
+- Sistema de convites entre usuários
+- Controle de membros por grupo
+- Edição de nomes de grupos (apenas admins)
 
-### 🔐 Sistema de Usuários
-- Cadastro e login seguro
-- Perfis personalizados
-- Controle de acesso por grupo
+### 📋 Listas Colaborativas
+- Criação de listas dentro dos grupos
+- Adição, edição e remoção de itens
+- Sistema de marcação (check/uncheck)
+- Edição de nomes das listas
+- Remoção em lote de itens marcados
+- Persistência em tempo real no banco de dados
 
-## 🛠️ Tecnologias Utilizadas
+## 🛠️ Stack Tecnológica
 
-- **Backend:** PHP
-- **Banco de Dados:** MySQL
-- **Frontend:** HTML5, CSS3, JavaScript
-- **Framework CSS:** Bootstrap 5.3.7 (customizado)
-- **Pré-processador:** SASS/SCSS
+- **Backend:** PHP 8+ com PDO
+- **Banco de Dados:** MySQL 8.0
+- **Frontend:** HTML5, CSS3, JavaScript ES6+
+- **Framework CSS:** Bootstrap 5.3.7 customizado
 - **Ícones:** Bootstrap Icons
+- **Servidor:** Apache (XAMPP)
 
-## 📁 Estrutura do Projeto
+## 📁 Arquitetura
 
 ```
 Desenvolvimento Web/
-├── 📁 components/
-│   ├── navbar.php
-│   └── footer.php
-├── 📁 css/
-│   ├── main.css (Bootstrap customizado)
-│   ├── main.scss (configurações SASS)
-│   └── style.css (estilos personalizados)
-├── 📁 elements/
-│   └── Vector.png
-├── 📄 index.php (página inicial)
-├── 📄 cadastro.php
-├── 📄 login.php
-├── 📄 meus-grupos.php
-├── 📄 grupo.php
-├── 📄 lista.php
-├── 📄 membros.php
-├── 📄 convites.php
-├── 📄 database.sql (estrutura do banco)
-└── 📄 package.json
+├── 📁 components/          # Componentes reutilizáveis
+├── 📁 config/             # Configurações do sistema
+│   └── database.php       # Conexão com MySQL
+├── 📁 css/               # Estilos e temas
+├── 📄 index.php          # Página inicial
+├── 📄 cadastro.php       # Registro de usuários
+├── 📄 login.php          # Autenticação
+├── 📄 meus-grupos.php    # Dashboard de grupos
+├── 📄 grupo.php          # Visualização do grupo
+├── 📄 lista.php          # Gerenciamento de listas
+├── 📄 membros.php        # Administração de membros
+├── 📄 convites.php       # Sistema de convites
+└── 📄 database.sql       # Schema do banco
 ```
 
-## 🎯 Como Usar
+## 🚀 Instalação
 
-1. **Clone o repositório**
-2. **Configure o servidor local** (XAMPP, WAMP, etc.)
-3. **Importe o banco de dados** executando o arquivo `database.sql` no MySQL
-4. **Acesse** `localhost/Desenvolvimento Web/`
-5. **Cadastre-se** e comece a criar seus grupos!
+1. **Configure o ambiente:**
+   ```bash
+   # Instale XAMPP ou similar
+   # Inicie Apache e MySQL
+   ```
 
-## 🎨 Customização de Cores
+2. **Configure o banco de dados:**
+   ```sql
+   # Execute database.sql no phpMyAdmin
+   # ou via linha de comando:
+   mysql -u root -p < database.sql
+   ```
 
-O projeto utiliza variáveis CSS customizadas no Bootstrap:
+3. **Acesse a aplicação:**
+   ```
+   http://localhost/Desenvolvimento Web/
+   ```
+
+## 🎨 Personalização
+
+O sistema utiliza Bootstrap customizado com variáveis CSS:
 
 ```scss
 $custom-colors: (
@@ -94,41 +102,30 @@ $custom-colors: (
 );
 ```
 
-Essas cores estão disponíveis em todas as classes do Bootstrap:
-- `.bg-maingreen` / `.bg-mainwhite`
-- `.text-maingreen` / `.text-mainwhite`
-- `.btn-maingreen` / `.btn-mainwhite`
-- `.border-maingreen` / `.border-mainwhite`
+Classes disponíveis: `.bg-maingreen`, `.text-maingreen`, `.btn-maingreen`, etc.
 
-## 📊 Banco de Dados
+## 🗄️ Modelo de Dados
 
-O sistema utiliza MySQL com as seguintes tabelas principais:
-- **usuarios** - Gerenciamento de usuários
-- **grupos** - Grupos colaborativos
-- **membros_grupo** - Relacionamento usuários/grupos
-- **convites** - Sistema de convites
-- **listas** - Listas dentro dos grupos
-- **itens_lista** - Itens das listas com status
+- **usuarios** - Autenticação e perfis
+- **grupos** - Grupos colaborativos com administradores
+- **membros_grupo** - Relacionamento N:N usuários/grupos
+- **convites** - Sistema de convites com status
+- **listas** - Listas organizadas por grupo
+- **itens_lista** - Itens com status de marcação
 
-## 👨‍💻 Desenvolvedores
+## 👨‍💻 Equipe de Desenvolvimento
 
 <div align="center">
-  
-| 👤 **João Paulo Moura** | 👤 **Rafael Eich Fernandes** |
+
+| **João Paulo Moura** | **Rafael Eich Fernandes** |
 |:---:|:---:|
 | [![GitHub](https://img.shields.io/badge/GitHub-222C2C?style=for-the-badge&logo=github&logoColor=E6F4F5)](https://github.com/JPaulo-mrs) | [![GitHub](https://img.shields.io/badge/GitHub-222C2C?style=for-the-badge&logo=github&logoColor=E6F4F5)](https://github.com/eichfernandes) |
-| [![Instagram](https://img.shields.io/badge/Instagram-308585?style=for-the-badge&logo=instagram&logoColor=E6F4F5)](https://www.instagram.com/jpaulo_mrs/) | [![Instagram](https://img.shields.io/badge/Instagram-308585?style=for-the-badge&logo=instagram&logoColor=E6F4F5)](https://www.instagram.com/eich_fernandes/) |
-| 📱 @JPaulo_Moura | 📱 @Rafaeich |
 
 </div>
-
-## 📄 Licença
-
-© 2025 Listsy. Todos os direitos reservados.
 
 ---
 
 <div align="center">
-  <p><strong>Listas compartilhadas, simples como devem ser</strong></p>
-  <p>🌟 Organize-se junto de quem importa 🌟</p>
+  <p><strong>Listsy - Organização colaborativa simplificada</strong></p>
+  <p>© 2025 - Desenvolvido com 💚</p>
 </div>
