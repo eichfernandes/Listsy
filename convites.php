@@ -12,7 +12,14 @@
     </style>
 </head>
 <body>
-    <?php include 'components/navbar.php'; ?>
+    <?php 
+    session_start();
+    if (!isset($_SESSION['user_id'])) {
+        header("Location: login.php");
+        exit;
+    }
+    include 'components/navbar.php'; 
+    ?>
     <div class="content">
         <div class="box pag-membros-convites">
             <!--Essa página aqui só deve ser acessada se o usuário estiver logado-->
@@ -29,26 +36,48 @@
             <!--Clica no convite >> Quer entrar? >> Sim ou Não-->
             <div class="list-container">
                 <?php
-                function criarMembro($nomePessoa, $nomeGrupo) {
-                    $nomePessoa = htmlspecialchars($nomePessoa);
-                    $nomeGrupo = htmlspecialchars($nomeGrupo);
-                    // Esse nome seguro é pra evitar XSS
+                require_once 'config/database.php';
+                
+                try {
+                    $stmt = $pdo->prepare("
+                        SELECT c.id, c.grupo_id, g.nome as grupo_nome, u.username as convidador
+                        FROM convites c
+                        JOIN grupos g ON c.grupo_id = g.id
+                        JOIN usuarios u ON c.usuario_convidador_id = u.id
+                        WHERE c.usuario_convidado_id = ? AND c.status = 'pendente'
+                        ORDER BY c.data_convite DESC
+                    ");
+                    $stmt->execute([$_SESSION['user_id']]);
+                    $convites = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     
-                    // Altere a Div conforme necessário 
-                    return "
-                    <div class=\"convite title\" style=\"margin: 0;\">
-                        <span>
-                            Convite de $nomePessoa
-                            <h1>$nomeGrupo</h1>
-                        </span>
-                    </div>
-                    ";
+                    if (empty($convites)) {
+                        echo "<p style='text-align: center; margin: 40px 0;'>Nenhum convite pendente.</p>";
+                    } else {
+                        foreach ($convites as $convite) {
+                            $nomeGrupo = htmlspecialchars($convite['grupo_nome']);
+                            $convidador = htmlspecialchars($convite['convidador']);
+                            
+                            echo "
+                            <div class='convite title' style='margin: 0; justify-content: space-between;'>
+                                <span>
+                                    Convite de $convidador
+                                    <h1>$nomeGrupo</h1>
+                                </span>
+                                <div style='display: flex; gap: 10px;'>
+                                    <button onclick='window.location.href=\"responder_convite.php?convite_id={$convite['id']}&resposta=aceitar\"' style='background: #198754; color: white; padding: 8px 16px; border: none; border-radius: 4px;'>
+                                        Aceitar
+                                    </button>
+                                    <button onclick='window.location.href=\"responder_convite.php?convite_id={$convite['id']}&resposta=recusar\"' style='background: #dc3545; color: white; padding: 8px 16px; border: none; border-radius: 4px;'>
+                                        Recusar
+                                    </button>
+                                </div>
+                            </div>
+                            ";
+                        }
+                    }
+                } catch(PDOException $e) {
+                    echo "<p>Erro ao carregar convites.</p>";
                 }
-
-                // Chamando 3 exemplos aleatórios, aqui deve entrar um código para ler no BD e chamar no formato correto
-                echo criarMembro("Eich_Rafael", "Família");
-                echo criarMembro("Gabriel", "Processo Seletivo Focus Consultoria");
-                echo criarMembro("GabiEich", "Família");
                 ?>
             </div>
         </div>
