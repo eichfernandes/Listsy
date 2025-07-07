@@ -39,6 +39,39 @@
     require_once 'config/database.php';
     $grupo_id = $_GET['id'] ?? 0;
     
+    $message = '';
+    $message_type = '';
+    
+    // Processar atualização do nome
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'update_grupo_nome') {
+        $nome = trim($_POST['nome']);
+        
+        try {
+            if (empty($nome)) {
+                $message = 'Nome não pode estar vazio!';
+                $message_type = 'danger';
+            } else {
+                $stmt = $pdo->prepare("UPDATE grupos SET nome = ? WHERE id = ? AND admin_id = ?");
+                $stmt->execute([$nome, $grupo_id, $_SESSION['user_id']]);
+                
+                if ($stmt->rowCount() == 0) {
+                    $message = 'Sem permissão para alterar!';
+                    $message_type = 'danger';
+                }
+            }
+        } catch(PDOException $e) {
+            $message = 'Erro ao atualizar nome!';
+            $message_type = 'danger';
+        }
+        
+        if (!empty($message)) {
+            // Só redireciona se não houver erro
+        } else {
+            header("Location: grupo.php?id=$grupo_id");
+            exit;
+        }
+    }
+    
     try {
         $stmt = $pdo->prepare("SELECT g.nome, g.admin_id FROM grupos g 
                               JOIN membros_grupo mg ON g.id = mg.grupo_id 
@@ -76,8 +109,15 @@
                     <?php endif; ?>
                 </div>
 
-                <form class="editable-container hidden" id="editor" method="POST" action="atualizar_grupo.php">
-                    <input type="hidden" name="grupo_id" value="<?php echo $grupo_id; ?>">
+                <?php if (!empty($message)): ?>
+                    <div class="alert alert-<?= $message_type ?> alert-dismissible fade show" role="alert" style="margin-top: 15px;">
+                        <?= htmlspecialchars($message) ?>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                <?php endif; ?>
+                
+                <form class="editable-container hidden" id="editor" method="POST">
+                    <input type="hidden" name="action" value="update_grupo_nome">
                     <input type="text" name="nome" id="inputTitulo" maxlength="40" required>
                     <button type="submit" class="icon-button" id="salvar">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">

@@ -69,9 +69,9 @@
                             $message = 'Já existe um convite pendente para este usuário!';
                             $message_type = 'warning';
                         } else {
-                            // Criar convite
-                            $stmt = $pdo->prepare("INSERT INTO convites (grupo_id, usuario_convidado_id, usuario_convidador_id, status) VALUES (?, ?, ?, 'pendente')");
-                            $stmt->execute([$grupo_id, $usuario['id'], $_SESSION['user_id']]);
+                            // Criar ou atualizar convite
+                            $stmt = $pdo->prepare("INSERT INTO convites (grupo_id, usuario_convidado_id, usuario_convidador_id, status) VALUES (?, ?, ?, 'pendente') ON DUPLICATE KEY UPDATE status = 'pendente', data_convite = CURRENT_TIMESTAMP, usuario_convidador_id = ?");
+                            $stmt->execute([$grupo_id, $usuario['id'], $_SESSION['user_id'], $_SESSION['user_id']]);
                             
                             $message = 'Convite enviado com sucesso!';
                             $message_type = 'success';
